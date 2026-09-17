@@ -1,10 +1,109 @@
 import os
 from PIL import Image, ImageDraw, ImageFont
+import scratchattach as sa
+from collections import Counter
+import time
+
+USERNAME = os.environ.get("SCRATCH_USERNAME")
+PASSWORD = os.environ.get("SCRATCH_PASSWORD")
+PROJECT_ID = 1382320367
+
+
+#------------------Scratchattachフェーズ-----------------------
+
+# 1. 設定
+STUDIO_ID = "51864038"
+TARGET_PARENT_COUNT = 1000  # 取得する親コメントの目標数
+
+print(f"スタジオ {STUDIO_ID} のデータを取得中...")
+studio = sa.get_studio(STUDIO_ID)
+
+all_commenters = []
+parent_count = 0
+offset = 0
+limit = 50  # 1回あたりの取得件数
+
+while parent_count < TARGET_PARENT_COUNT:
+    # 親コメントの取得
+    comments = studio.comments(limit=limit, offset=offset)
+    if not comments:
+        break
+    
+    for c in comments:
+        all_commenters.append(c.author)
+        parent_count += 1
+        
+        # --- 返信（リプライ）の回収 ---
+        reply_offset = 0
+        while True:
+            replies = studio.get_comment_replies(comment_id=c.id, limit=limit, offset=reply_offset)
+            if not replies:
+                break
+            for r in replies:
+                all_commenters.append(r.author)
+            reply_offset += limit
+            if len(replies) < limit:
+                break
+        
+        # 目標の親コメント数に達したらループを抜ける
+        if parent_count >= TARGET_PARENT_COUNT:
+            break
+            
+    offset += limit
+    print(f"進捗: 親コメント {parent_count}/{TARGET_PARENT_COUNT} 個スキャン完了 (総取得ユーザー名: {len(all_commenters)}件)")
+    
+    # 取得したコメントがlimit未満なら、これ以上古いコメントはありません
+    if len(comments) < limit:
+        break
+    
+    # APIの負荷軽減のための小さなウェイト
+    time.sleep(0.5)
+
+# 2. ランキングの集計
+counter = Counter(all_commenters)
+ranking = counter.most_common()
+
+# 3. 結果の表示
+print("\n=== コメント数ランキング（直近の親コメント500個＋その返信） ===")
+print(f"合計解析件数: {len(all_commenters)} コメント\n")
+
+if not ranking:
+    print("コメントが見つかりませんでした。")
+else:
+    # 上位20名を表示（必要に応じて数値を変更してください）
+    for rank, (user, count) in enumerate(ranking[:20], 1):
+        print(f"{rank}位: {user} ({count}回)")
+
+
+# --- ここから変数の代入処理 ---
+
+# 上位3位の変数を初期化（コメントが3人未満だった場合の対策）
+rank1_user, rank1_count = None, 0
+rank2_user, rank2_count = None, 0
+rank3_user, rank3_count = None, 0
+
+# 集計結果が存在する場合のみ、変数に代入
+if len(ranking) >= 1:
+    rank1_user, rank1_count = ranking[0]
+if len(ranking) >= 2:
+    rank2_user, rank2_count = ranking[1]
+if len(ranking) >= 3:
+    rank3_user, rank3_count = ranking[2]
+
+# 3. 変数の中身を確認（プリント出力）
+print("\n=== 変数に格納された上位3位データ ===")
+print(f"1位の変数 -> ユーザー名: {rank1_user}, 回数: {rank1_count}回")
+print(f"2位の変数 -> ユーザー名: {rank2_user}, 回数: {rank2_count}回")
+print(f"3位の変数 -> ユーザー名: {rank3_user}, 回数: {rank3_count}回")
+
+
+
+#------------------画像作成フェーズ-----------------------
 
 # 1. 基本設定
-width, height = 500, 300
+width, height = 480, 360
 png_filename = "number_image.png"
-text_to_show = "1位:____\n2位:______\n3位:______"
+text_to_show = f"1位:{rank1_user}　コメント数:{rank1_count}回\n2位:{rank2_user}　コメント数:{rank2_count}回\n3位:{rank3_user}　コメント数:{rank3_count}回"
 
 # 2. 色設定
 bg_color = (20, 20, 20)
@@ -14,28 +113,12 @@ text_color = (255, 215, 0)
 img = Image.new("RGB", (width, height), color=bg_color)
 draw = ImageDraw.Draw(img)
 
-# 4. アップロードしたカスタムフォント（.woff2）を読み込む
-font_size = 40
-font_path = "my-font.ttf"  # 📌 ここにあなたのフォントファイル名を入れてください
+font_size = 20
+font_path = "my-font.ttf" 
 
-try:
-    # 自前の woff2 フォントを読み込む
-    font = ImageFont.truetype(font_path, font_size)
-    print(f"Success: {font_path} を読み込みました。")
-except IOError:
-    # 万が一読み込めなかった場合のバックアップ（Linux標準フォント）
-    print(f"Warning: {font_path} の読み込みに失敗したため、代替フォントを探します。")
-    fallback_paths = [
-        "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",
-        "/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf"
-    ]
-    font = None
-    for path in fallback_paths:
-        if os.path.exists(path):
-            font = ImageFont.truetype(path, font_size)
-            break
-    if font is None:
-        font = ImageFont.load_default()
+
+font = ImageFont.truetype(font_path, font_size)
+print(f"Success: {font_path} を読み込みました。")
 
 # 5. テキストを中央揃えで描画
 bbox = draw.multiline_textbbox((0, 0), text_to_show, font=font, spacing=15)
