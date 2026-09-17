@@ -16,7 +16,7 @@ draw = ImageDraw.Draw(img)
 
 # 4. アップロードしたカスタムフォント（.woff2）を読み込む
 font_size = 40
-font_path = "my-font.woff2"  # 📌 ここにあなたのフォントファイル名を入れてください
+font_path = "my-font.ttf"  # 📌 ここにあなたのフォントファイル名を入れてください
 
 try:
     # 自前の woff2 フォントを読み込む
