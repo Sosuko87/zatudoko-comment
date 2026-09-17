@@ -21,7 +21,7 @@ jobs:
       # 3. 依存ライブラリのインストール（requirements.txt がある場合のみ）
       - name: Install dependencies
         run: |
-          pip install Pillow
+          pip install Pillow Scratchattach
 
       # 4. main.py の実行
       - name: Run main.py
