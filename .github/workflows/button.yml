@@ -26,8 +26,9 @@ jobs:
       # 4. main.py の実行
       - name: Run main.py
         run: python main.py
-      - name: Upload GIF Artifact
+      - name: Upload PNG Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: my-pikopiko-gif             # ダウンロードするときのフォルダ名（自由に変更可）
-          path: pikopiko_number.gif         # Pythonコードで保存した実際のファイル名
+          name: my-number-png           # ダウンロードするときのフォルダ名
+          path: number_image.png        # Pythonコードで保存したPNGのファイル名
+
