@@ -53,6 +53,7 @@ counter = Counter(all_commenters)
 ranking = counter.most_common()
 
 # 3. 結果の表示
+print(counter)
 print("\n=== コメント数ランキング（直近の親コメント500個＋その返信） ===")
 print(f"合計解析件数: {len(all_commenters)} コメント\n")
 
