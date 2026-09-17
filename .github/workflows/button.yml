@@ -1,0 +1,28 @@
+name: Run Python Script
+
+on:
+  workflow_dispatch: # 手動実行（緑のボタン）を有効化
+
+jobs:
+  run-python:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. リポジトリのコードをチェックアウト
+      - name: Checkout repository code
+        uses: actions/checkout@v4
+
+      # 2. Python環境のセットアップ（バージョンは必要に応じて変更してください）
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      # 3. 依存ライブラリのインストール（requirements.txt がある場合のみ）
+      - name: Install dependencies
+        run: |
+          pip install Pillow
+
+      # 4. main.py の実行
+      - name: Run main.py
+        run: python main.py
