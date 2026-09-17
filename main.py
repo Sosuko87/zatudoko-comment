@@ -33,17 +33,6 @@ while parent_count < TARGET_PARENT_COUNT:
         all_commenters.append(c.author)
         parent_count += 1
         
-        # --- 返信（リプライ）の回収 ---
-        reply_offset = 0
-        while True:
-            replies = studio.comments(comment_id=c.id, limit=limit, offset=reply_offset)
-            if not replies:
-                break
-            for r in replies:
-                all_commenters.append(r.author)
-            reply_offset += limit
-            if len(replies) < limit:
-                break
         
         # 目標の親コメント数に達したらループを抜ける
         if parent_count >= TARGET_PARENT_COUNT:
