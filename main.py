@@ -36,7 +36,7 @@ while parent_count < TARGET_PARENT_COUNT:
         # --- 返信（リプライ）の回収 ---
         reply_offset = 0
         while True:
-            replies = studio.get_comment_replies(comment_id=c.id, limit=limit, offset=reply_offset)
+            replies = studio.comments(comment_id=c.id, limit=limit, offset=reply_offset)
             if not replies:
                 break
             for r in replies:
