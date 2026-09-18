@@ -102,6 +102,7 @@ target_comment = comments[-1]
 now = datetime.now()
 comment_time = target_comment.datetime 
 
+print(comment_time)
 # 1. 時間の引き算（これで「〇分〇秒の差」というデータが取れます）
 time_difference = now - comment_time
 
