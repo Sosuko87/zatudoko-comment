@@ -59,7 +59,6 @@ counter = Counter(all_commenters)
 ranking = counter.most_common()
 
 # 3. 結果の表示
-print(counter)
 print("\n=== コメント数ランキング（直近の親コメント500個＋その返信） ===")
 print(f"合計解析件数: {len(all_commenters)} コメント\n")
 
@@ -130,3 +129,4 @@ draw.multiline_text((x, y), text_to_show, fill=text_color, font=font, align="cen
 img.save(png_filename, "PNG")
 print(f"{png_filename} を作成しました！")
 project.set_thumbnail(file="number_image.png")
+project.set_instructions(f"20位までの発表...\n\n{Counter}\n\nこれらの情報は全て自動で更新されています。\n\nバグ等がございましたら @ZZZBanana のコメント欄でお伝えください。")
