@@ -8,6 +8,9 @@ USERNAME = os.environ.get("SCRATCH_USERNAME")
 PASSWORD = os.environ.get("SCRATCH_PASSWORD")
 PROJECT_ID = 1382320367
 
+session = sa.login(USERNAME, PASSWORD)
+project = session.connect_project(PROJECT_ID)
+
 
 #------------------Scratchattachフェーズ-----------------------
 
@@ -123,3 +126,4 @@ draw.multiline_text((x, y), text_to_show, fill=text_color, font=font, align="cen
 # 6. 保存
 img.save(png_filename, "PNG")
 print(f"{png_filename} を作成しました！")
+project.set_thumbnail(file="number_image.png")
