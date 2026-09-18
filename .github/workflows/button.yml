@@ -1,7 +1,13 @@
 name: Run Python Script
 
 on:
-  workflow_dispatch: # 手動実行（緑のボタン）を有効化
+  repository_dispatch:
+    types: [my-cron-event] 
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
 
 jobs:
   run-python:
