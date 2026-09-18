@@ -129,4 +129,15 @@ draw.multiline_text((x, y), text_to_show, fill=text_color, font=font, align="cen
 img.save(png_filename, "PNG")
 print(f"{png_filename} を作成しました！")
 project.set_thumbnail(file="number_image.png")
-project.set_instructions(f"20位までの発表...\n\n{Counter}\n\nこれらの情報は全て自動で更新されています。\n\nバグ等がございましたら @ZZZBanana のコメント欄でお伝えください。")
+import scratchattach as sa
+
+session = sa.login("あなたのユーザー名", "あなたのパスワード")
+project = session.connect_project("プロジェクトID")
+
+
+# 【修正ポイント】Counterをきれいなテキストに変換する
+instructions_text = "【集計結果】\n"
+for item, count in counter.items():
+    instructions_text += f"・{item}: {count}回\n"
+
+project.set_instructions(f"20位までの発表...\n\n{instructions_text}\n\nこれらの情報は全て自動で更新されています。\n\nバグ等がございましたら @ZZZBanana のコメント欄でお伝えください。")
