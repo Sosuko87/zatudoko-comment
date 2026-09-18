@@ -94,6 +94,20 @@ print(f"3位の変数 -> ユーザー名: {rank3_user}, 回数: {rank3_count}回
 
 
 
+# 直近のコメントを100件取得（limitで件数を指定）
+comments = studio.comments(limit=100)
+
+if len(comments) >= 100:
+    # リストの一番最後（インデックス-1）が100個前のコメント
+    target_comment = comments[-1]
+
+    posted_time_str = target_comment.datetime # もしくは .time_created などオブジェクトの属性
+    
+    print(f"100個前のコメントの投稿者: {target_comment.author}")
+    print(f"100個前のコメントの送信時刻: {posted_time_str}")
+    print(f"コメント内容: {target_comment.content}")
+else:
+    print(f"スタジオの総コメント数がまだ {len(comments)} 個しかありません。")
 
 # リストの一番最後（インデックス-1）が100個前のコメント
 target_comment = comments[-1]
