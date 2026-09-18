@@ -19,7 +19,7 @@ project = session.connect_project(PROJECT_ID)
 
 # 1. 設定
 STUDIO_ID = "51864038"
-TARGET_PARENT_COUNT = 800  # 取得する親コメントの目標数
+TARGET_PARENT_COUNT = 1000  # 取得する親コメントの目標数
 
 print(f"スタジオ {STUDIO_ID} のデータを取得中...")
 studio = sa.get_studio(STUDIO_ID)
@@ -27,7 +27,7 @@ studio = sa.get_studio(STUDIO_ID)
 all_commenters = []
 parent_count = 0
 offset = 0
-limit = 100  # 1回あたりの取得件数
+limit = 50  # 1回あたりの取得件数
 
 while parent_count < TARGET_PARENT_COUNT:
     # 親コメントの取得
@@ -52,7 +52,7 @@ while parent_count < TARGET_PARENT_COUNT:
         break
     
     # APIの負荷軽減のための小さなウェイト
-    time.sleep(0.25)
+    time.sleep(0.5)
 
 # 2. ランキングの集計
 counter = Counter(all_commenters)
