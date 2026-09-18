@@ -12,10 +12,6 @@ jobs:
       - name: Checkout repository code
         uses: actions/checkout@v4
 
-        env:
-          SCRATCH_PASSWORD: ${{ secrets.SCRATCH_PASSWORD }} 
-          SCRATCH_USERNAME: ${{ secrets.SCRATCH_USERNAME }} 
-
       # 2. Python環境のセットアップ（バージョンは必要に応じて変更してください）
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -29,7 +25,11 @@ jobs:
 
       # 4. main.py の実行
       - name: Run main.py
+        env:
+          SCRATCH_PASSWORD: ${{ secrets.SCRATCH_PASSWORD }} 
+          SCRATCH_USERNAME: ${{ secrets.SCRATCH_USERNAME }} 
         run: python main.py
+
       - name: Upload PNG Artifact
         uses: actions/upload-artifact@v4
         with:
