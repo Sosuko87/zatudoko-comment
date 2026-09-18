@@ -120,6 +120,8 @@ target_comment = comments[-1]
 now_num = time.time()  # 今の時間を数字（秒数）で取得
 comment_num = target_comment.timestamp  # コメントの時間を数字（秒数）で取得
 
+print(comment_num)
+
 # 2. 数字同士の引き算（これで「何秒差か」が出ます）
 seconds_passed = now_num - comment_num
 
