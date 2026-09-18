@@ -99,7 +99,7 @@ print(f"3位の変数 -> ユーザー名: {rank3_user}, 回数: {rank3_count}回
 target_comment = comments[-1]
 
 # 今の時間
-now = datetime.now()
+now = datetime.now(timezone.utc)
 comment_time = target_comment.datetime 
 
 print(comment_time)
