@@ -133,8 +133,8 @@ import scratchattach as sa
 
 
 # 【修正ポイント】Counterをきれいなテキストに変換する
-instructions_text = "【ランキング】\n"
-for item, count in counter.most_common():
-    instructions_text += f"・{item}: {count}回\n"
+instructions_text = "【ランキング（多い順）】\n"
+for rank, (user, count) in enumerate(ranking[:20], 1):
+    instructions_text += f"・{rank}位:  {user} {count}回\n"
 
 project.set_instructions(f"20位までの発表...\n\n{instructions_text}\n\nこれらの情報は全て自動で更新されています。\n\nバグ等がございましたら @ZZZBanana のコメント欄でお伝えください。")
