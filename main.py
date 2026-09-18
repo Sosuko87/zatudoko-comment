@@ -26,7 +26,7 @@ studio = sa.get_studio(STUDIO_ID)
 jisoku = 0
 try:
     # 最初の50件をテスト用に1回だけ取得
-    speed_comments = studio.comments(limit=50, offset=0)
+    speed_comments = studio.comments(limit=10, offset=0)
     
     if len(speed_comments) >= 2:
         target_comment = speed_comments[-1] # 50個前のコメント
