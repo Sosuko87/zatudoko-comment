@@ -134,7 +134,7 @@ print(f"3位の変数 -> ユーザー名: {rank3_user}, 回数: {rank3_count}回
 # 1. 基本設定
 width, height = 480, 360
 png_filename = "number_image.png"
-text_to_show = f"1位:{rank1_user}　コメント数:{rank1_count}回\n2位:{rank2_user}　コメント数:{rank2_count}回\n3位:{rank3_user}　コメント数:{rank3_count}回\n\n総合スピード:{jisoku}コメント/時"
+text_to_show = f"1位:{rank1_user}　コメント数:{rank1_count}回\n2位:{rank2_user}　コメント数:{rank2_count}回\n3位:{rank3_user}　コメント数:{rank3_count}回\n\n総合スピード:　{jisoku}コメント/時"
 
 # 2. 色設定
 bg_color = (20, 20, 20)
