@@ -96,7 +96,7 @@ print(f"3位の変数 -> ユーザー名: {rank3_user}, 回数: {rank3_count}回
 #------------------画像作成フェーズ-----------------------
 
 # 1. 基本設定
-width, height = 480, 360
+width, height = 480, 480
 png_filename = "number_image.png"
 text_to_show = f"1位:{rank1_user}　コメント数:{rank1_count}回\n2位:{rank2_user}　コメント数:{rank2_count}回\n3位:{rank3_user}　コメント数:{rank3_count}回"
 
