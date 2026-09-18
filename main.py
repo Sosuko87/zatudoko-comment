@@ -8,6 +8,9 @@ USERNAME = os.environ.get("SCRATCH_USERNAME")
 PASSWORD = os.environ.get("SCRATCH_PASSWORD")
 PROJECT_ID = 1382320367
 
+print(USERNAME)
+print(PASSWORD)
+
 session = sa.login(USERNAME, PASSWORD)
 project = session.connect_project(PROJECT_ID)
 
