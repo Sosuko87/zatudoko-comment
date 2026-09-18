@@ -19,7 +19,7 @@ project = session.connect_project(PROJECT_ID)
 
 # 1. 設定
 STUDIO_ID = "51864038"
-TARGET_PARENT_COUNT = 1000  # 取得する親コメントの目標数
+TARGET_PARENT_COUNT = 800  # 取得する親コメントの目標数
 
 print(f"スタジオ {STUDIO_ID} のデータを取得中...")
 studio = sa.get_studio(STUDIO_ID)
