@@ -27,7 +27,7 @@ studio = sa.get_studio(STUDIO_ID)
 all_commenters = []
 parent_count = 0
 offset = 0
-limit = 80  # 1回あたりの取得件数
+limit = 100  # 1回あたりの取得件数
 
 while parent_count < TARGET_PARENT_COUNT:
     # 親コメントの取得
