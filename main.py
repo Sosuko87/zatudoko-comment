@@ -52,7 +52,7 @@ while parent_count < TARGET_PARENT_COUNT:
         break
     
     # APIの負荷軽減のための小さなウェイト
-    time.sleep(0.5)
+    time.sleep(0.25)
 
 # 2. ランキングの集計
 counter = Counter(all_commenters)
