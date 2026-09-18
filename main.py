@@ -9,9 +9,6 @@ USERNAME = os.environ.get("SCRATCH_USERNAME")
 PASSWORD = os.environ.get("SCRATCH_PASSWORD")
 PROJECT_ID = 1382320367
 
-print(USERNAME)
-print(PASSWORD)
-
 session = sa.login(USERNAME, PASSWORD)
 project = session.connect_project(PROJECT_ID)
 
@@ -41,12 +38,12 @@ try:
         # ※ 末尾の 'Z' をPythonが読める形式に置き換えます
         comment_datetime = datetime.fromisoformat(time_str.replace('Z', '+00:00')).replace(tzinfo=None)
         
-        # 3. 数字（タイムスタンプの秒数）に変換！
         comment_num = comment_datetime.timestamp()
-        now_num = datetime.now().timestamp()
         
-        # 4. 数字同士の引き算（これで何分差かが秒単位から出ます）
+        now_num = datetime.utcnow().timestamp() 
+
         minutes_passed = (now_num - comment_num) / 60
+
         
         # 5. 時速を計算（50コメ ÷ 経過した分 × 60分）
         if minutes_passed > 0:
