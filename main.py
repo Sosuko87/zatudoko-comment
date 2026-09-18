@@ -48,7 +48,7 @@ try:
         # 5. 時速を計算（50コメ ÷ 経過した分 × 60分）
         if minutes_passed > 0:
             jisoku = (len(speed_comments) / minutes_passed) * 60
-            jisoku = round(jisoku)  # 四捨五入してきれいな数字に
+            jisoku = round(jisoku, 1)  # 四捨五入してきれいな数字に
             print(f"【成功】現在の時速は 【{jisoku} コメ/時間】 です！")
         else:
             print("時間の経過が正常に計算できませんでした。")
