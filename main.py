@@ -24,7 +24,38 @@ TARGET_PARENT_COUNT = 1000  # 取得する親コメントの目標数
 
 print(f"スタジオ {STUDIO_ID} のデータを取得中...")
 studio = sa.get_studio(STUDIO_ID)
-
+# --- ここに「時速計算処理」を差し込む ---
+jisoku = 0
+try:
+    # 最初の50件をテスト用に1回だけ取得
+    speed_comments = studio.comments(limit=50, offset=0)
+    
+    if len(speed_comments) >= 2:
+        target_comment = speed_comments[-1] # 50個前のコメント
+        
+        # 1. コメントの時間を「文字列」として取得
+        time_str = target_comment.time_created  # 例: "2026-09-18T16:20:00.000Z"
+        
+        # 2. datetimeオブジェクトに変換（一番安全なISOフォーマット読み込み）
+        # ※ 末尾の 'Z' をPythonが読める形式に置き換えます
+        comment_datetime = datetime.fromisoformat(time_str.replace('Z', '+00:00')).replace(tzinfo=None)
+        
+        # 3. 数字（タイムスタンプの秒数）に変換！
+        comment_num = comment_datetime.timestamp()
+        now_num = datetime.now().timestamp()
+        
+        # 4. 数字同士の引き算（これで何分差かが秒単位から出ます）
+        minutes_passed = (now_num - comment_num) / 60
+        
+        # 5. 時速を計算（50コメ ÷ 経過した分 × 60分）
+        if minutes_passed > 0:
+            jisoku = (len(speed_comments) / minutes_passed) * 60
+            jisoku = round(jisoku)  # 四捨五入してきれいな数字に
+            print(f"【成功】現在の時速は 【{jisoku} コメ/時間】 です！")
+        else:
+            print("時間の経過が正常に計算できませんでした。")
+except Exception as e:
+    print(f"時速計算でエラーが発生しました: {e}")
 all_commenters = []
 parent_count = 0
 offset = 0
@@ -93,48 +124,6 @@ print(f"2位の変数 -> ユーザー名: {rank2_user}, 回数: {rank2_count}回
 print(f"3位の変数 -> ユーザー名: {rank3_user}, 回数: {rank3_count}回")
 
 
-
-# 直近のコメントを100件取得（limitで件数を指定）
-comments = studio.comments(limit=100)
-
-if len(comments) >= 100:
-    # リストの一番最後（インデックス-1）が100個前のコメント
-    target_comment = comments[-1]
-
-    posted_time_str = target_comment.datetime # もしくは .time_created などオブジェクトの属性
-    
-    print(f"100個前のコメントの投稿者: {target_comment.author}")
-    print(f"100個前のコメントの送信時刻: {posted_time_str}")
-    print(f"コメント内容: {target_comment.content}")
-else:
-    print(f"スタジオの総コメント数がまだ {len(comments)} 個しかありません。")
-
-# リストの一番最後（インデックス-1）が100個前のコメント
-target_comment = comments[-1]
-
-import time
-
-target_comment = comments[-1]
-
-# 1. 今の時間とコメントの時間を「数字（秒数）」として取得
-now_num = time.time()  # 今の時間を数字（秒数）で取得
-comment_num = target_comment.timestamp  # コメントの時間を数字（秒数）で取得
-
-print(comment_num)
-
-# 2. 数字同士の引き算（これで「何秒差か」が出ます）
-seconds_passed = now_num - comment_num
-
-# 3. 秒数を「分」に変換
-minutes_passed = seconds_passed / 60
-
-# 4. 時速を計算（50コメ ÷ 経過した分 × 60分）
-if minutes_passed > 0:
-    jisoku = (50 / minutes_passed) * 60
-    jisoku = round(jisoku)  # 小数点を四捨五入
-    print(f"現在の時速は 【{jisoku} コメ/時間】 です！")
-else:
-    print("時間が正常に計算できませんでした。")
 
 
 
