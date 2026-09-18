@@ -131,9 +131,6 @@ print(f"{png_filename} を作成しました！")
 project.set_thumbnail(file="number_image.png")
 import scratchattach as sa
 
-session = sa.login("あなたのユーザー名", "あなたのパスワード")
-project = session.connect_project("プロジェクトID")
-
 
 # 【修正ポイント】Counterをきれいなテキストに変換する
 instructions_text = "【集計結果】\n"
