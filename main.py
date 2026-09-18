@@ -35,7 +35,7 @@ try:
         target_comment = speed_comments[-1] # 50個前のコメント
         
         # 1. コメントの時間を「文字列」として取得
-        time_str = target_comment.time_created  # 例: "2026-09-18T16:20:00.000Z"
+        time_str = target_comment.datetime_created  # 例: "2026-09-18T16:20:00.000Z"
         
         # 2. datetimeオブジェクトに変換（一番安全なISOフォーマット読み込み）
         # ※ 末尾の 'Z' をPythonが読める形式に置き換えます
