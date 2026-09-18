@@ -30,7 +30,7 @@ while parent_count < TARGET_PARENT_COUNT:
         break
     
     for c in comments:
-        all_commenters.append(c.author.username)
+        all_commenters.append(c.author().username)
         parent_count += 1
         
         
