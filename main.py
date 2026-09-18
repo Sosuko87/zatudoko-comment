@@ -3,6 +3,7 @@ from PIL import Image, ImageDraw, ImageFont
 import scratchattach as sa
 from collections import Counter
 import time
+from datetime import datetime
 
 USERNAME = os.environ.get("SCRATCH_USERNAME")
 PASSWORD = os.environ.get("SCRATCH_PASSWORD")
@@ -90,6 +91,31 @@ print("\n=== 変数に格納された上位3位データ ===")
 print(f"1位の変数 -> ユーザー名: {rank1_user}, 回数: {rank1_count}回")
 print(f"2位の変数 -> ユーザー名: {rank2_user}, 回数: {rank2_count}回")
 print(f"3位の変数 -> ユーザー名: {rank3_user}, 回数: {rank3_count}回")
+
+
+
+
+# リストの一番最後（インデックス-1）が100個前のコメント
+target_comment = comments[-1]
+
+# 今の時間
+now = datetime.now()
+comment_time = target_comment.datetime 
+
+# 1. 時間の引き算（これで「〇分〇秒の差」というデータが取れます）
+time_difference = now - comment_time
+
+# 2. 差を「分（分単位の小数）」に変換する
+minutes_passed = time_difference.total_seconds() / 60
+
+# 3. 時速を計算する（100コメ ÷ 経過した分 × 60分）
+if minutes_passed > 0:
+    jisoku = (100 / minutes_passed) * 60
+    jisoku = round(jisoku) # 小数点を四捨五入してきれいに
+    print(f"現在の時速は 【{jisoku} コメ/時間】 です！")
+else:
+    print("時間が正常に計算できませんでした。")
+
 
 
 
