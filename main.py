@@ -198,7 +198,7 @@ png_filename = "temporary_thumb.png"
 
 try:
     print("気象庁から画像をダウンロード中...")
-    urllib.request.urlretrieve(image_url, local_filename)
+    urllib.request.urlretrieve(image_url, jpg_filename)
     with Image.open(jpg_filename) as img:
         img.save(png_filename, "PNG")
     
