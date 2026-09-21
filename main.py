@@ -8,6 +8,7 @@ from datetime import datetime, timezone
 USERNAME = os.environ.get("SCRATCH_USERNAME")
 PASSWORD = os.environ.get("SCRATCH_PASSWORD")
 PROJECT_ID = 1382320367
+SECOND_PROJECT_ID = 1383178970
 
 session = sa.login(USERNAME, PASSWORD)
 project = session.connect_project(PROJECT_ID)
@@ -188,5 +189,5 @@ rounded_minute = (utc_now.minute // 10) * 10
 new_utc = utc_now.replace(minute=rounded_minute, second=0, microsecond=0)
 use_utc = new_utc.strftime("%H%M")
 print(use_utc)
-project = session.connect_project(1383178970)
-project.set_thumbnail(file=f"https://www.data.jma.go.jp/mscweb/data/himawari/img/jpn/jpn_trm_{use_utc}.jpg")
+second_project = session.connect_project(SECOND_PROJECT_ID)
+second_project.set_thumbnail(file=f"https://www.data.jma.go.jp/mscweb/data/himawari/img/jpn/jpn_trm_{use_utc}.jpg")
