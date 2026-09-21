@@ -3,7 +3,7 @@ from PIL import Image, ImageDraw, ImageFont
 import scratchattach as sa
 from collections import Counter
 import time
-from datetime import datetime
+from datetime import datetime, timezone
 
 USERNAME = os.environ.get("SCRATCH_USERNAME")
 PASSWORD = os.environ.get("SCRATCH_PASSWORD")
@@ -165,7 +165,6 @@ draw.multiline_text((x, y), text_to_show, fill=text_color, font=font, align="cen
 img.save(png_filename, "PNG")
 print(f"{png_filename} を作成しました！")
 project.set_thumbnail(file="number_image.png")
-import scratchattach as sa
 
 
 # 【修正ポイント】Counterをきれいなテキストに変換する
@@ -174,3 +173,20 @@ for rank, (user, count) in enumerate(ranking[:20], 1):
     instructions_text += f"・{rank}位:  {user} {count}回\n"
 
 project.set_instructions(f"20位までの発表...\n\n{instructions_text}\n\nこれらの情報は全て自動で更新されています。\n\nバグ等がございましたら @ZZZBanana のコメント欄でお伝えください。")
+
+
+
+
+
+utc_now = datetime.now(timezone.utc)
+
+# 2. 「分」を10の倍数に切り捨てる計算
+# （例：23分 // 10 = 2  ->  2 * 10 = 20分）
+rounded_minute = (utc_now.minute // 10) * 10
+
+# 3. 分を置き換えて、秒とマイクロ秒を0にする
+new_utc = utc_now.replace(minute=rounded_minute, second=0, microsecond=0)
+use_utc = new_utc.strftime("%H%M")
+print(use_utc)
+project = session.connect_project(1383178970)
+project.set_thumbnail(file=f"https://www.data.jma.go.jp/mscweb/data/himawari/img/jpn/jpn_trm_{use_utc}.jpg")
