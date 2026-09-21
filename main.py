@@ -193,16 +193,20 @@ print(use_utc)
 image_url = f"https://www.data.jma.go.jp/mscweb/data/himawari/img/jpn/jpn_trm_{use_utc}.jpg"
 
 # 5. 一時的にパソコンに画像を保存する（ファイル名は temporary_thumb.jpg）
-local_filename = "temporary_thumb.jpg"
+jpg_filename = "temporary_thumb.jpg"
+png_filename = "temporary_thumb.png"
+
 try:
     print("気象庁から画像をダウンロード中...")
     urllib.request.urlretrieve(image_url, local_filename)
+    with Image.open(jpg_filename) as img:
+        img.save(png_filename, "PNG")
     
     # 6. Scratchのプロジェクトに接続してサムネイルを設定
     project = session.connect_project(SECOND_PROJECT_ID)
     
     # 引数は元の「file=」に戻し、保存した画像ファイルを指定します
-    project.set_thumbnail(file=local_filename)
+    project.set_thumbnail(file=png_filename)
     print("サムネイルの変更が完了しました！")
 
 except Exception as e:
