@@ -2,6 +2,7 @@ import os
 from PIL import Image, ImageDraw, ImageFont
 import scratchattach as sa
 from collections import Counter
+import urllib.request
 import time
 from datetime import datetime, timezone
 
@@ -189,5 +190,21 @@ rounded_minute = (utc_now.minute // 10) * 10
 new_utc = utc_now.replace(minute=rounded_minute, second=0, microsecond=0)
 use_utc = new_utc.strftime("%H%M")
 print(use_utc)
-second_project = session.connect_project(SECOND_PROJECT_ID)
-second_project.set_thumbnail(image=f"https://www.data.jma.go.jp/mscweb/data/himawari/img/jpn/jpn_trm_{use_utc}.jpg")
+image_url = f"https://www.data.jma.go.jp/mscweb/data/himawari/img/jpn/jpn_trm_{use_utc}.jpg"
+
+# 5. 一時的にパソコンに画像を保存する（ファイル名は temporary_thumb.jpg）
+local_filename = "temporary_thumb.jpg"
+try:
+    print("気象庁から画像をダウンロード中...")
+    urllib.request.urlretrieve(image_url, local_filename)
+    
+    # 6. Scratchのプロジェクトに接続してサムネイルを設定
+    project = session.connect_project(SECOND_PROJECT_ID)
+    
+    # 引数は元の「file=」に戻し、保存した画像ファイルを指定します
+    project.set_thumbnail(file=local_filename)
+    print("サムネイルの変更が完了しました！")
+
+except Exception as e:
+    print(f"エラーが発生しました: {e}")
+    print("※気象庁の画像がまだサーバーにアップロードされていない（配信遅延）可能性があります。")
